@@ -1,0 +1,28 @@
+Gestion des Contacts de Notification :
+Description : Créez une page "Paramètres" où l'utilisateur peut définir :
+Le numéro de téléphone à appeler.
+Le numéro pour les SMS.
+L'adresse e-mail de destination.
+Mise en œuvre technique : Ces informations seraient stockées dans une table settings. Vos scripts qui déclenchent les notifications liraient cette table avant d'envoyer quoi que ce soit. La page web mettrait à jour cette table via une API.
+
+
+je vait prendre les options :
+
+Gestion des Incidents (au lieu d'un simple "statut") :
+Description : Le statut "traitée" est bien, mais limité. Remplacez-le par un système de "rapport d'incident". Quand l'utilisateur clique sur "Traiter", une petite fenêtre modale s'ouvre et lui demande de qualifier l'alerte :
+Type : Fausse alerte (animal, météo), Test, Activité suspecte, Intrusion confirmée.
+Notes : Un champ de texte pour ajouter des commentaires ("Vu un véhicule suspect", "C'était juste le chat").
+Mise en œuvre technique : Il faudrait ajouter des colonnes à votre table alertes (ex: incident_type, notes). Le bouton "Traiter" ouvrirait une modale Bootstrap, et la soumission enverrait les données via AJAX à update_status.php qui mettrait à jour plus de champs;
+
+Dashboard de Statistiques Avancé :
+Description : Créez une page dédiée "Statistiques" ou ajoutez une section à l'accueil avec des graphiques interactifs (en utilisant une librairie comme Chart.js) :
+Graphique en barres : Nombre d'alertes par jour sur les 7 derniers jours.
+Graphique linéaire : Nombre d'alertes par heure sur une journée type (pour voir si les détections ont lieu la nuit, le matin, etc.).
+Diagramme circulaire : Répartition des types d'incidents (voir fonctionnalité n°2).
+Mise en œuvre technique : Créez de nouveaux scripts API (ex: /api/get_hourly_stats.php) qui effectuent des requêtes SQL avec GROUP BY sur les dates pour formater les données pour Chart.js. ;
+
+"Heatmap" d'Activité:
+Description : Affichez une vue calendaire du mois où la couleur de chaque jour est plus ou moins intense en fonction du nombre d'alertes reçues. Cela permet de repérer en un clin d'œil les jours les plus "chauds".
+Mise en œuvre technique : Il existe des librairies JS pour cela (comme Cal-Heatmap). L'API fournirait simplement une liste de dates avec le nombre d'alertes pour chacune. ;
+
+et je veut qu'à la fin des 20 images, il est un boutton pour afficher plus d'immage(20 autres) mais si il y a plus d'autre image à afficher, le boutton disparrait
