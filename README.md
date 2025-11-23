@@ -110,7 +110,7 @@ Script Python : Éditez le script pour mettre vos infos personnelles.
 code
 Bash
 
-nano /var/www/html/detection_mouvement.py
+sudo nano /var/www/html/detection_mouvement.py
 
 Modifiez save_dir si besoin.
 Mettez l'IP de VOTRE téléphone dans la section SMS.
