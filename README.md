@@ -163,13 +163,140 @@ NUMERO_SMS = "+33612345678"
 
 2. Pour la Caméra IP (Lignes ~35)
     mettez l'adresse vue dans DroidCam :
+   
 code
 Python
+
 CAMERAS_CONFIG = {
     "USB_CAM": {"source": 0},
     # mettez votre IP DroidCam
     "PHONE_CAM": {"source": "http://192.168.1.14:4747/video"}, 
 }
+
+
+🦅 Guide Complémentaire : Audio, Téléphonie et Mobile
+1. Installation du Message Vocal (Audio)
+Asterisk est très strict sur les formats audio. Il ne lit pas les MP3 directement. Il faut convertir votre fichier menu_message.mp3 en format WAV spécifique (Mono, 8000Hz) et le placer au bon endroit.
+Commandes à exécuter sur la VM :
+Installer le convertisseur :
+
+code
+Bash
+
+sudo apt update && sudo apt install ffmpeg -y
+
+Convertir et installer le fichier :
+(Assurez-vous que votre fichier menu_message.mp3 est dans votre dossier actuel)
+
+code
+Bash
+
+# 1. Créer les dossiers nécessaires
+
+sudo mkdir -p /var/lib/asterisk/sounds/custom
+
+# 2. Convertir le MP3 en WAV compatible Asterisk
+
+ffmpeg -i menu_message.mp3 -ac 1 -ar 8000 -acodec pcm_s16le alerte.wav
+
+# 3. Copier le fichier dans les deux dossiers standards (ceinture et bretelles)
+
+sudo cp alerte.wav /var/lib/asterisk/sounds/custom/alerte.wav
+
+sudo mv alerte.wav /var/lib/asterisk/sounds/alerte.wav
+
+# 4. Donner les permissions à Asterisk (CRUCIAL)
+
+sudo chown asterisk:asterisk /var/lib/asterisk/sounds/alerte.wav
+
+sudo chown asterisk:asterisk /var/lib/asterisk/sounds/custom/alerte.wav
+
+sudo chmod 644 /var/lib/asterisk/sounds/alerte.wav
+
+sudo chmod 644 /var/lib/asterisk/sounds/custom/alerte.wav
+
+2. Configuration d'Asterisk (Fichiers de Config)
+Pour que le système d'appel fonctionne, vous devez configurer deux fichiers.
+A. Fichier sip.conf (Les Comptes)
+Ouvrez le fichier :
+
+code
+Bash
+
+sudo nano /etc/asterisk/sip.conf
+
+Allez tout en bas du fichier (ou effacez tout) et ajoutez cette configuration propre :
+
+code
+Ini
+
+[general]
+context=internal
+allowguest=no
+udpbindaddr=0.0.0.0
+tcpenable=no
+transport=udp
+
+; Configuration du compte pour votre Softphone (PC/Mobile)
+[100]
+type=friend
+context=internal
+host=dynamic
+secret=1234        ; Mot de passe à mettre dans votre softphone
+disallow=all
+allow=ulaw
+allow=alaw
+allow=gsm
+dtmfmode=rfc2833   ; INDISPENSABLE pour que la touche "1" fonctionne
+B. Fichier extensions.conf (Le Plan d'Appel)
+Ouvrez le fichier :
+
+code
+Bash
+
+sudo nano /etc/asterisk/extensions.conf
+
+Ajoutez ceci à la fin :
+
+code
+Ini
+
+[general]
+static=yes
+writeprotect=no
+
+[internal]
+; Extension pour appeler le softphone 100
+exten => 100,1,Dial(SIP/100,20)
+same => n,Hangup()
+
+[alerte-systeme]
+; Le script Python appelle ici
+exten => s,1,Answer()
+same => n,Wait(1)
+; Joue le son (écoute les touches en même temps)
+same => n,Background(/var/lib/asterisk/sounds/custom/alerte)
+same => n,WaitExten(5)
+
+; Si on appuie sur 1 : Désactive l'alarme
+exten => 1,1,System(/usr/local/bin/desactiver_alarme.sh)
+same => n,Playback(beep) ; Bip de confirmation
+same => n,Hangup()
+
+; Si timeout ou erreur
+exten => t,1,Playback(vm-goodbye)
+same => n,Hangup()
+exten => i,1,Playback(pbx-invalid)
+same => n,Goto(s,3)
+N'oubliez pas de redémarrer Asterisk après modification :
+
+code
+Bash
+
+sudo systemctl restart asterisk
+
+
+
 
 Étape 6 : Lancer !
 Lancer le script de surveillance :
@@ -181,6 +308,3 @@ python3 /var/www/html/detection_mouvement.py
 
 Voir le site web :
 Ouvrez le navigateur de la VM et allez sur http://localhost.
-
-
-
