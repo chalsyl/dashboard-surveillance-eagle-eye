@@ -16,10 +16,13 @@ sudo apt install apache2 php libapache2-mod-php php-mysql mysql-server python3-p
 
 # 2. Installer les librairies Python
 pip install opencv-python mysql-connector-python requests
+
 Étape 2 : Récupérer le Projet
 Nous allons télécharger le code directement dans le dossier du serveur web.
+
 code
 Bash
+
 # Aller dans le dossier web
 cd /var/www/html
 
