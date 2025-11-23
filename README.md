@@ -63,12 +63,17 @@ SQL
 -- Création de l'utilisateur (Si vous changez le mot de passe ici, changez-le aussi dans les fichiers de config !)
 
 CREATE USER IF NOT EXISTS 'python_user'@'localhost' IDENTIFIED BY 'PytHon_pr0j€t!';
+
 CREATE USER IF NOT EXISTS 'python_user'@'%' IDENTIFIED BY 'PytHon_pr0j€t!';
 
 -- Donner les droits sur la base 'surveillance'
+
 GRANT ALL PRIVILEGES ON surveillance.* TO 'python_user'@'localhost';
+
 GRANT ALL PRIVILEGES ON surveillance.* TO 'python_user'@'%';
+
 FLUSH PRIVILEGES;
+
 EXIT;
 
 Étape 4 : Configurer le stockage des images
