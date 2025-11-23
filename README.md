@@ -115,6 +115,22 @@ sudo nano /var/www/html/detection_mouvement.py
 Modifiez save_dir si besoin.
 Mettez l'IP de VOTRE téléphone dans la section SMS.
 Mettez VOTRE numéro de téléphone destinataire.
+
+📱 Partie Supplémentaire : Récupérer les infos Android (Traccar & DroidCam)
+Vos collègues auront besoin de récupérer les adresses IP spécifiques de leur téléphone.
+A. Pour les SMS (Traccar SMS Gateway)
+Ouvrez l'application Traccar SMS Gateway.
+Paramètre > Gateway configuration.
+Regardez la section "LOCAL SERVICE" (Service Local) :
+L'Adresse IP et le Port sont sous "Endpoints" (ex: http://192.168.1.14:8082).
+Le Token est affiché juste au-dessus (une suite de chiffres/lettres).
+B. Pour la Caméra IP (DroidCam)
+Connectez votre téléphone au Wi-Fi.
+Ouvrez l'application DroidCam (ou DroidCamX).
+L'application affiche un écran avec "WiFi IP" et "DroidCam Port".
+L'adresse complète à utiliser est : http:// + WiFi IP + : + Port + /video.
+Exemple : Si IP est 192.168.1.14 et Port est 4747, l'adresse est : http://192.168.1.14:4747/video
+
 Étape 6 : Lancer !
 Lancer le script de surveillance :
 
