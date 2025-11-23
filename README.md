@@ -88,6 +88,7 @@ mkdir -p ~/captures
 # 2. Donner les droits (remplacez 'votre_nom' par votre nom d'utilisateur Linux, ex: osboxes)
 
 chmod 755 ~
+
 chmod 755 ~/captures
 
 # 3. Créer le lien symbolique pour le site web
