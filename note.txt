@@ -1,0 +1,1 @@
+rajouter une page permetteant e lancer le scrypt depuis le site et une foix lancé affiche cote à cote les enregistrement des caméra disponibles , activer ou désactiver es sms automatique, activet ou désactiver les appelles automatique et arréter l'enregistrement une foix lancé.

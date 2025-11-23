@@ -16,19 +16,21 @@ $alertes = $stmt->fetchAll();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eagle Eye - Dashboard de Surveillance</title>
+    <title>Eagle Eye - Command Center</title>
     
-    <!-- Bootstrap 5 -->
+    <!-- Bootstrap 5 (CDN) -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     
-    <!-- Font Awesome pour les icônes -->
+    <!-- Font Awesome (CDN) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     
-    <!-- Chart.js pour les graphiques -->
+    <!-- Chart.js (CDN) -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- NOUVELLES FONTS : Inter (UI) et JetBrains Mono (Data) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     
     <!-- CSS personnalisé -->
     <link rel="stylesheet" href="assets/css/style.css">
@@ -38,17 +40,34 @@ $alertes = $stmt->fetchAll();
     <header class="dashboard-header">
         <div class="container">
             <div class="d-flex align-items-center justify-content-between">
+                
+                <!-- Logo -->
                 <div class="brand">
                     <i class="fas fa-eye brand-icon"></i>
-                    <h1 class="brand-title">EAGLE EYE</h1>
-                    <span class="brand-subtitle">Surveillance System</span>
+                    <div>
+                        <h1 class="brand-title">EAGLE EYE</h1>
+                        <div class="brand-subtitle">SURVEILLANCE SYSTEM</div>
+                    </div>
                 </div>
-                <div class="header-info">
-                    <span class="status-indicator">
-                        <span class="pulse-dot"></span>
-                        <span>SYSTÈME ACTIF</span>
-                    </span>
-                    <span class="current-time" id="currentTime"></span>
+
+                <!-- Zone Droite -->
+                <div class="d-flex align-items-center gap-4">
+                    
+                    <!-- Info (Heure) -->
+                    <div class="header-info d-none d-md-flex">
+                        <span class="status-indicator">
+                            <span class="pulse-dot"></span>
+                            <span>ONLINE</span>
+                        </span>
+                        <span class="current-time" id="currentTime"></span>
+                    </div>
+
+                    <!-- LE BOUTON DE NAVIGATION -->
+                    <a href="control.php" class="btn-command">
+                        <i class="fas fa-gamepad"></i>
+                        <span>COMMANDER</span>
+                    </a>
+
                 </div>
             </div>
         </div>
@@ -305,14 +324,15 @@ $alertes = $stmt->fetchAll();
     </div>
 </div>
 
-    <!-- Toast Notification -->
+   <!-- Toast Notification -->
     <div id="toast" class="toast-notification">
         <i class="fas fa-check-circle"></i>
         <span id="toastMessage"></span>
     </div>
 
-    <!-- Scripts -->
+    <!-- Bootstrap JS (CDN) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Notre Application -->
     <script src="assets/js/app.js"></script>
 </body>
 </html>
