@@ -35,6 +35,7 @@ sudo git clone https://github.com/chalsyl/dashboard-surveillance-eagle-eye.git .
 # Donner les permissions à Apache
 
 sudo chown -R www-data:www-data /var/www/html
+
 sudo chmod -R 755 /var/www/html
 
 Étape 3 : Configurer la Base de Données
