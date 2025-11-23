@@ -27,7 +27,7 @@ LOCK_FILE = "/tmp/alarme_desactivee.lock" # Fichier créé si on appuie sur 1
 
 CAMERAS_CONFIG = {
     "USB_CAM": {"source": 0},
-    # "PHONE_CAM": {"source": "http://192.168.1.14:4747/video"}, 
+    "PHONE_CAM": {"source": "http://192.168.1.14:4747/video"}, 
 }
 
 # --- GLOBALES ---
