@@ -30,6 +30,9 @@ cd /var/www/html
 sudo rm index.html
 
 # Cloner le projet (remplacez par le lien du dépôt si nécessaire)
+
+sudo apt install git -y
+
 sudo git clone https://github.com/chalsyl/dashboard-surveillance-eagle-eye.git .
 
 # Donner les permissions à Apache
