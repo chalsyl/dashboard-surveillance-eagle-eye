@@ -245,7 +245,7 @@ transport=udp
 type=friend
 context=internal
 host=dynamic
-secret=1234        ; Mot de passe à mettre dans votre softphone
+secret=1234        
 disallow=all
 allow=ulaw
 allow=alaw
@@ -270,23 +270,28 @@ writeprotect=no
 
 [internal]
 ; Extension pour appeler le softphone 100
+
 exten => 100,1,Dial(SIP/100,20)
 same => n,Hangup()
 
 [alerte-systeme]
 ; Le script Python appelle ici
+
 exten => s,1,Answer()
 same => n,Wait(1)
 ; Joue le son (écoute les touches en même temps)
+
 same => n,Background(/var/lib/asterisk/sounds/custom/alerte)
 same => n,WaitExten(5)
 
 ; Si on appuie sur 1 : Désactive l'alarme
+
 exten => 1,1,System(/usr/local/bin/desactiver_alarme.sh)
 same => n,Playback(beep) ; Bip de confirmation
 same => n,Hangup()
 
 ; Si timeout ou erreur
+
 exten => t,1,Playback(vm-goodbye)
 same => n,Hangup()
 exten => i,1,Playback(pbx-invalid)
