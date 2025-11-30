@@ -303,7 +303,18 @@ Bash
 
 sudo systemctl restart asterisk
 
+# Création du script de désactivation automatique (Copiez tout le bloc)
+sudo tee /usr/local/bin/desactiver_alarme.sh <<'EOF'
+#!/bin/bash
+LOCK_FILE="/tmp/alarme_desactivee.lock"
+touch "$LOCK_FILE"
+chmod 666 "$LOCK_FILE"
+(sleep 60 && rm -f "$LOCK_FILE") &
+exit 0
+EOF
 
+# Rendre le script exécutable (INDISPENSABLE)
+sudo chmod +x /usr/local/bin/desactiver_alarme.sh
 
 
 Étape 6 : Lancer !
