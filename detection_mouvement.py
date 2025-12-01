@@ -41,6 +41,7 @@ fgbgs = {}
 last_alert_times = {}
 settings_cache = {"system_status": "0", "sms_enabled": "0", "call_enabled": "0", "last_check": 0}
 prev_system_on = None 
+last_phone_call_time = 0  # Timestamp du dernier appel
 
 def get_db():
     try: return mysql.connector.connect(**DB_CONFIG)
@@ -218,7 +219,15 @@ try:
                                 if sms_on: envoyer_sms(f"ALERTE {name} ID:{aid}")
 
                                 # APPEL ASTERISK
-                                if call_on: declencher_appel_asterisk(name)
+                                if call_on: 
+                                    # On vérifie si 60 secondes se sont écoulées depuis le dernier appel
+                                    # peu importe quelle caméra a détecté
+                                    if (time.time() - last_phone_call_time) > 60:
+                                        declencher_appel_asterisk(name)
+                                        last_phone_call_time = time.time() # On met à jour le chrono
+                                        print("   ☎️ Appel autorisé et lancé.")
+                                    else:
+                                        print("   ⏳ Appel bloqué (Délai 1min non écoulé)")
 
                         except: pass
 
