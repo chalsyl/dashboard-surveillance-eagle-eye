@@ -529,3 +529,56 @@ function showToast(msg, err=false) {
     t.classList.add('show');
     setTimeout(()=>t.classList.remove('show'), 3000);
 }
+
+// ===== GESTION DE LA SUPPRESSION =====
+
+// 1. Délégation d'événement pour le bouton "Supprimer" individuel
+document.addEventListener('click', function(e) {
+    if (e.target && e.target.closest('.btn-delete-alert')) {
+        const btn = e.target.closest('.btn-delete-alert');
+        const id = btn.getAttribute('data-id');
+        deleteAlert(id, btn);
+    }
+});
+
+// 2. Événement pour le bouton "Tout Purger"
+const btnPurge = document.getElementById('btnPurgeAll');
+if (btnPurge) {
+    btnPurge.addEventListener('click', function() {
+        if (confirm("Attention : Voulez-vous vraiment supprimer définitivement toutes les alertes traitées et leurs images ?")) {
+            purgeAllTreated();
+        }
+    });
+}
+
+function deleteAlert(id, btn) {
+    // Petit effet visuel immédiat
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+    
+    fetch('api/delete_alerts.php', {
+        method: 'POST',
+        body: JSON.stringify({ action: 'delete_one', id: id })
+    }).then(r => r.json()).then(data => {
+        if (data.success) {
+            // Animation de suppression
+            const card = document.querySelector(`.alert-card[data-id="${id}"]`);
+            if (card) card.remove();
+            showToast("Alerte supprimée.");
+            updateAlertCountText(-1);
+        }
+    });
+}
+
+function purgeAllTreated() {
+    fetch('api/delete_alerts.php', {
+        method: 'POST',
+        body: JSON.stringify({ action: 'delete_all_treated' })
+    }).then(r => r.json()).then(data => {
+        if (data.success) {
+            showToast("Toutes les archives ont été supprimées.");
+            // Recharger la grille
+            currentOffset = 0;
+            applyFilters(true);
+        }
+    });
+}
