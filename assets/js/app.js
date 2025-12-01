@@ -253,14 +253,24 @@ function createAlertCard(alert) {
     const dateFormatted = new Date(alert.date_alerte).toLocaleString('fr-FR');
 
     let footerContent = '';
+    
     if (!isTraitee) {
+        // Bouton TRAITER (Bleu)
         footerContent = `<button class="btn-mark-treated" data-id="${alert.id}"><i class="fas fa-clipboard-check"></i> TRAITER</button>`;
-    } else if (alert.incident_type) {
+    } else {
+        // INFOS + Bouton SUPPRIMER (Rouge)
         footerContent = `
             <div class="incident-info">
-                <div class="incident-type"><i class="fas fa-tag"></i> ${alert.incident_type}</div>
+                <div class="incident-type"><i class="fas fa-tag"></i> ${alert.incident_type || 'Incident classé'}</div>
                 ${alert.notes ? `<div class="incident-notes"><i class="fas fa-comment"></i> ${alert.notes}</div>` : ''}
-            </div>`;
+            </div>
+            <button class="btn-delete-alert" data-id="${alert.id}" style="
+                width: 100%; margin-top: 10px; background: rgba(239, 68, 68, 0.1); 
+                border: 1px solid var(--neon-red); color: var(--neon-red); padding: 5px; 
+                border-radius: 6px; cursor: pointer; font-family: var(--font-tech);">
+                <i class="fas fa-trash"></i> SUPPRIMER
+            </button>
+        `;
     }
 
     return `
