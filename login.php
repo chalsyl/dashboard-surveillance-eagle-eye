@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user = $stmt->fetch();
 
         // Vérification du mot de passe (admin / admin par défaut)
-        if ($user && password_verify($password, $user['password'])) {
+        if ($user && $password === $user['password']) {
             // SUCCÈS
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['username'] = $username;
