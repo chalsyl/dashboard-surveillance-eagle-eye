@@ -71,7 +71,10 @@ $alertes = $stmt->fetchAll();
                         <i class="fas fa-gamepad"></i>
                         <span>COMMANDER</span>
                     </a>
-
+                    
+                    <a href="logout.php" class="btn-filter" style="border-color: var(--neon-red); color: var(--neon-red);" title="Déconnexion">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </a>
                 </div>
             </div>
         </div>
