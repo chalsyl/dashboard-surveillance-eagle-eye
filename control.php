@@ -7,6 +7,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 require_once 'database.php'; 
 ?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -247,6 +248,9 @@ require_once 'database.php';
                 <i class="fas fa-shield-alt brand-icon"></i>
                 <h1 class="brand-title">EAGLE EYE <span class="brand-subtitle">COMMAND</span></h1>
             </div>
+            <a href="logout.php" class="btn-filter" style="border-color: var(--neon-red); color: var(--neon-red);" title="Déconnexion">
+                <i class="fas fa-sign-out-alt"></i>
+            </a>
             <a href="index.php" class="btn-filter"><i class="fas fa-arrow-left"></i> DASHBOARD</a>
         </div>
     </header>
