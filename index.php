@@ -134,10 +134,6 @@ $alertes = $stmt->fetchAll();
                                 <button type="button" class="btn-filter" data-filter="traitée">
                                     <i class="fas fa-check-circle"></i> Traitées
                                 </button>
-                            <label>Actions :</label>
-                                <button type="button" class="btn-filter" id="btnPurgeAll" style="border-color: var(--neon-red); color: var(--neon-red);">
-                                <i class="fas fa-trash-alt"></i> Purger Traitées
-                                </button>
                             </div>
                         </div>
                         <div class="filter-group">
@@ -150,6 +146,12 @@ $alertes = $stmt->fetchAll();
                                     <i class="fas fa-sort-amount-up"></i> Plus ancien
                                 </button>
                             </div>
+                        </div>
+                        <div class="filter-group">
+                            <label>Actions :</label>
+                                <button type="button" class="btn-filter" id="btnPurgeAll" style="border-color: var(--neon-red); color: var(--neon-red);">
+                                <i class="fas fa-trash-alt"></i> Purger Traitées
+                                </button>
                         </div>
                     </div>
                 </div>
