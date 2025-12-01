@@ -1,4 +1,12 @@
-<?php require_once 'database.php'; ?>
+<?php 
+session_start();
+// Si pas connecté, ouste ! Direction le login
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit;
+}
+require_once 'database.php'; 
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
