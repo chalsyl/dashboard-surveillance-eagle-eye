@@ -149,9 +149,11 @@ $alertes = $stmt->fetchAll();
                         </div>
                         <div class="filter-group">
                             <label>Actions :</label>
+                            <div class="btn-group-filter" role="group">
                                 <button type="button" class="btn-filter" id="btnPurgeAll" style="border-color: var(--neon-red); color: var(--neon-red);">
                                 <i class="fas fa-trash-alt"></i> Purger Traitées
                                 </button>
+                            </div>
                         </div>
                     </div>
                 </div>
