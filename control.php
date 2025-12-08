@@ -1,6 +1,5 @@
 <?php 
 session_start();
-// Si pas connecté, ouste ! Direction le login
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit;
@@ -15,16 +14,15 @@ require_once 'database.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eagle Eye - Command Center</title>
     
-    <!-- CDNs -->
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
     
     <style>
-        /* --- Styles Spécifiques pour le Contrôleur --- */
         
-        /* Zone du Réacteur (Bouton Power) */
+        
         .reactor-container {
             display: flex;
             flex-direction: column;
@@ -44,7 +42,7 @@ require_once 'database.php';
             margin-bottom: 2rem;
         }
 
-        /* Le bouton lui-même */
+        
         .power-btn {
             width: 100%;
             height: 100%;
@@ -63,7 +61,7 @@ require_once 'database.php';
             justify-content: center;
         }
 
-        /* Anneaux animés autour du bouton */
+        
         .power-ring {
             position: absolute;
             top: -10px; left: -10px; right: -10px; bottom: -10px;
@@ -79,7 +77,7 @@ require_once 'database.php';
             border-radius: 50%; border: 1px solid var(--glass-border); opacity: 0.3;
         }
 
-        /* État ACTIF (Vert/Bleu Néon) */
+        
         .power-btn.active {
             color: var(--neon-green);
             border-color: var(--neon-green);
@@ -89,19 +87,19 @@ require_once 'database.php';
         
         .power-btn.active ~ .power-ring {
             border-color: var(--neon-green);
-            animation: spin 4s linear infinite; /* Tourne plus vite */
+            animation: spin 4s linear infinite; 
             box-shadow: 0 0 30px var(--neon-green-glow);
         }
 
-        /* Style Console Hacker */
+        
 .console-box {
     background-color: #000;
-    color: #00ff00; /* Vert Matrix */
+    color: #00ff00; 
     font-family: 'Courier New', Courier, monospace;
     padding: 15px;
     border-radius: 5px;
     height: 400px;
-    overflow-y: auto; /* Barre de défilement */
+    overflow-y: auto; 
     border: 1px solid #333;
     box-shadow: inset 0 0 10px #000;
     font-size: 0.9rem;
@@ -116,7 +114,7 @@ require_once 'database.php';
     font-size: 0.8rem;
     margin-right: 10px;
 } 
-        /* État LOADING */
+        
         .power-btn.loading i { display: none; }
         .power-btn.loading::after {
             content: '';
@@ -127,7 +125,7 @@ require_once 'database.php';
             animation: spin 1s linear infinite;
         }
 
-        /* Modules de configuration */
+        
         .config-module {
             display: flex;
             align-items: center;
@@ -144,7 +142,7 @@ require_once 'database.php';
             border-color: var(--neon-blue);
         }
         
-        /* Switch Custom */
+        
         .switch-custom {
             position: relative; display: inline-block; width: 50px; height: 26px;
         }
@@ -161,7 +159,7 @@ require_once 'database.php';
         input:checked + .slider:before { transform: translateX(24px); background-color: var(--neon-green); box-shadow: 0 0 10px var(--neon-green-glow); }
         input:disabled + .slider { opacity: 0.5; cursor: not-allowed; }
 
-        /* Caméras */
+        
         .live-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
@@ -173,17 +171,17 @@ require_once 'database.php';
     z-index: 0;
 }
 
-/* Les images elles-mêmes */
+
 .cam-layer {
     position: absolute;
     top: 0; left: 0;
     width: 100%; height: 100%;
     object-fit: cover;
-    opacity: 0; /* Caché par défaut */
-    transition: opacity 0.2s ease-in-out; /* Transition fluide */
+    opacity: 0; 
+    transition: opacity 0.2s ease-in-out; 
 }
 
-/* Classe pour afficher l'image active */
+
 .cam-layer.visible {
     opacity: 1;
     z-index: 2;
@@ -204,7 +202,7 @@ require_once 'database.php';
         }
         .cam-feed.active img { opacity: 1; }
         
-        /* Overlay "No Signal" */
+        
         .no-signal {
             position: absolute; inset: 0;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -260,7 +258,7 @@ require_once 'database.php';
     <main class="dashboard-main">
         <div class="container">
             <div class="row g-4">
-                <!-- Bouton Power -->
+                
                 <div class="col-lg-5">
                     <div class="kpi-card reactor-container h-100">
                         <div class="power-btn-wrapper">
@@ -274,7 +272,7 @@ require_once 'database.php';
                     </div>
                 </div>
 
-                <!-- Config -->
+                
                 <div class="col-lg-7">
                     <div class="h-100 d-flex flex-column justify-content-center gap-3">
                         <div class="config-module">
@@ -312,7 +310,7 @@ require_once 'database.php';
             </div>
             <div class="card-body p-0">
                 <div id="live-console" class="console-box">
-                    <!-- Les logs s'afficheront ici -->
+                    
                     <div class="text-center text-muted mt-5">Chargement des logs...</div>
                 </div>
             </div>
@@ -320,52 +318,52 @@ require_once 'database.php';
     </div>
 </div>
 
-            <!-- Caméras -->
+            
             <div class="section-header mt-5">
                 <h2 class="section-title"><i class="fas fa-video"></i> FLUX TACTIQUES</h2>
             </div>
             <div class="live-grid" id="cameraGrid">
-                <!-- Le JS va injecter les caméras ici -->
+                
             </div>
         </div>
     </main>
 
     <script>
-        // ===== CONFIGURATION =====
+        
         const API_URL = 'api/control_system.php';
-        // REMPLACEZ PAR VOTRE IP :
+        
         const IMG_BASE_URL = 'http://192.168.56.102/captures/'; 
         const CAMERAS = ['USB_CAM', 'PHONE_CAM']; 
 
-        // État global
+        
         let isProcessing = false;
         let ignoreUpdates = false;
-        const activeLayerMap = {}; // Pour le double buffering
+        const activeLayerMap = {}; 
 
-        // ===== 1. INITIALISATION DES CAMÉRAS (CRÉATION HTML) =====
+        
         function initCameras() {
             const container = document.getElementById('cameraGrid');
             if(!container) return;
             container.innerHTML = '';
             
             CAMERAS.forEach(camName => {
-                activeLayerMap[camName] = 0; // On commence par le calque 0
+                activeLayerMap[camName] = 0; 
                 
                 const camHtml = `
                     <div class="cam-feed" id="feed-${camName}">
-                        <!-- Overlay NO SIGNAL -->
+                        
                         <div class="no-signal" id="nosig-${camName}">
                             <i class="fas fa-video-slash fa-3x mb-3"></i>
                             <div style="font-family: var(--font-tech); letter-spacing: 2px;">OFFLINE</div>
                         </div>
                         
-                        <!-- IMAGES SUPERPOSÉES (Double Buffering) -->
+                        
                         <div class="cam-layers">
                             <img class="cam-layer visible" id="layer0-${camName}" src="" alt="">
                             <img class="cam-layer" id="layer1-${camName}" src="" alt="">
                         </div>
 
-                        <!-- UI Overlay -->
+                        
                         <div class="cam-ui">
                             <div class="cam-header">
                                 <div class="cam-name">${camName}</div>
@@ -378,16 +376,16 @@ require_once 'database.php';
             });
         }
 
-        // ===== 2. MISE À JOUR VIDÉO (FLUIDITÉ TOTALE) =====
+        
         function updateVideoFeeds(isOn) {
             const ts = new Date().getTime();
             
             CAMERAS.forEach(camName => {
-                // Sélecteurs précis basés sur l'ID créé dans initCameras
+                
                 const feedDiv = document.getElementById(`feed-${camName}`);
                 const noSignal = document.getElementById(`nosig-${camName}`);
                 
-                // Sécurité si le DOM n'est pas prêt
+                
                 if (!feedDiv || !noSignal) return;
 
                 if (!isOn) {
@@ -398,7 +396,7 @@ require_once 'database.php';
 
                 feedDiv.classList.add('active');
 
-                // Logique Ping-Pong des calques
+                
                 const currentIdx = activeLayerMap[camName] || 0;
                 const nextIdx = (currentIdx === 0) ? 1 : 0;
                 
@@ -407,31 +405,31 @@ require_once 'database.php';
 
                 if(!nextImg || !currentImg) return;
 
-                // Préchargement en mémoire
+                
                 const tester = new Image();
                 
                 tester.onload = function() {
-                    // SUCCÈS : L'image est prête, on l'affiche
+                    
                     nextImg.src = this.src;
-                    nextImg.classList.add('visible'); // Fade In
-                    currentImg.classList.remove('visible'); // Fade Out
+                    nextImg.classList.add('visible'); 
+                    currentImg.classList.remove('visible'); 
                     noSignal.style.opacity = 0;
                     
-                    // On note quel est le calque actif pour la prochaine fois
+                    
                     activeLayerMap[camName] = nextIdx;
                 };
 
                 tester.onerror = function() {
-                    // ERREUR : Fichier supprimé par Python -> Caméra HS
+                    
                     noSignal.style.opacity = 1;
                 };
 
-                // Déclenchement du chargement
+                
                 tester.src = `${IMG_BASE_URL}live_${camName}.jpg?t=${ts}`;
             });
         }
 
-        // ===== 3. LOGIQUE BOUTONS & API =====
+        
         const powerBtn = document.getElementById('systemPowerBtn');
         const statusText = document.getElementById('systemStatusText');
         const statusSub = document.getElementById('systemSubtext');
@@ -450,7 +448,7 @@ require_once 'database.php';
                     const s = data.settings;
                     const isOn = s.system_status === '1';
 
-                    // UI Power
+                    
                     if (isOn) {
                         powerBtn.classList.add('active');
                         statusText.textContent = "SYSTÈME ENGAGÉ";
@@ -465,7 +463,7 @@ require_once 'database.php';
                         serverMsg.innerHTML = '<i class="fas fa-stop-circle" style="color:var(--neon-red)"></i> Service en pause';
                     }
 
-                    // UI Toggles (si pas désactivés par l'utilisateur)
+                    
                     if (!smsToggle.disabled) smsToggle.checked = s.sms_enabled === '1';
                     if (!callToggle.disabled) callToggle.checked = s.call_enabled === '1';
                 }
@@ -479,14 +477,14 @@ require_once 'database.php';
             .then(response => response.json())
             .then(data => {
                 const consoleBox = document.getElementById('live-console');
-                consoleBox.innerHTML = ''; // On vide pour rafraîchir
+                consoleBox.innerHTML = ''; 
 
-                // On parcourt les logs (data est trié par DESC, on veut afficher le plus récent en haut)
+                
                 data.forEach(log => {
                     const line = document.createElement('div');
                     line.className = 'console-line';
                     
-                    // Formatage de la date
+                    
                     const date = new Date(log.date_log);
                     const timeStr = date.toLocaleTimeString();
 
@@ -497,26 +495,26 @@ require_once 'database.php';
             .catch(err => console.error('Erreur logs:', err));
     }
 
-    // Rafraîchir les logs toutes les 2 secondes
+    
     setInterval(fetchLogs, 2000);
     
-    // Premier chargement
+    
     fetchLogs();
     
-        // Action générique pour les toggles
+        
         async function toggleSetting(key, val, el) {
             ignoreUpdates = true; el.disabled = true;
             try {
                 await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'toggle_setting', key: key, value: val }) });
-                // Petit délai pour laisser le temps à la BDD de s'écrire
+                
                 setTimeout(() => { ignoreUpdates = false; refreshStatus(true); }, 1000);
             } catch(e) { 
-                el.checked = !val; // Annuler en cas d'erreur
+                el.checked = !val; 
                 ignoreUpdates = false; 
             } finally { el.disabled = false; }
         }
 
-        // Listeners
+        
         powerBtn.addEventListener('click', async () => {
             if(powerBtn.classList.contains('loading')) return;
             
@@ -528,7 +526,7 @@ require_once 'database.php';
                 const target = powerBtn.classList.contains('active') ? '0' : '1';
                 await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'set_status', value: target }) });
                 
-                // Attente forcée pour la stabilité (Python doit lire la BDD)
+                
                 setTimeout(async () => {
                     await refreshStatus(true);
                     powerBtn.classList.remove('loading');
@@ -544,27 +542,25 @@ require_once 'database.php';
         smsToggle.addEventListener('change', (e) => toggleSetting('sms_enabled', e.target.checked, smsToggle));
         callToggle.addEventListener('change', (e) => toggleSetting('call_enabled', e.target.checked, callToggle));
 
-        // ===== 4. BOUCLES INFINIES =====
         
-        // Démarrage
+        
+        
         initCameras();
         refreshStatus(true);
 
-        // Loop Statut (Lent)
+        
         setInterval(refreshStatus, 2000);
         
-        // Loop Vidéo (Rapide)
+        
         setInterval(() => {
-            // On ne lance le rafraichissement vidéo que si le bouton est ACTIF
+            
             if(powerBtn.classList.contains('active')) {
                 updateVideoFeeds(true);
             } else {
                 updateVideoFeeds(false);
             }
-        }, 150); // ~7 images/sec
+        }, 150); 
 
     </script>
 </body>
 </html>
-
- 
