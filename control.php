@@ -47,7 +47,7 @@ require_once 'database.php';
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            background: rgba(10, 10, 15, 0.9);
+             background: rgba(10, 10, 15, 0.9);
             border: 2px solid var(--glass-border);
             color: var(--text-muted);
             font-size: 3rem;

@@ -1,17 +1,12 @@
-/* =========================================
-   THEME: EAGLE EYE - COMMAND CENTER (V2)
-   ========================================= */
-
-/* --- 1. VARIABLES & CONFIGURATION --- */
 :root {
-    /* --- Palette Premium Dark --- */
+    
     --bg-deep: #050505;
     
-    /* CORRECTION : Fond plus opaque (0.85) pour meilleure lisibilité */
-    --glass-bg: rgba(13, 17, 23, 0.85);
-    --glass-border: rgba(255, 255, 255, 0.12); /* Bordure un peu plus visible */
     
-    /* --- Couleurs Neon (Glow) --- */
+    --glass-bg: rgba(13, 17, 23, 0.85);
+    --glass-border: rgba(255, 255, 255, 0.12); 
+    
+    
     --neon-blue: #3b82f6;
     --neon-blue-glow: rgba(59, 130, 246, 0.5);
     --neon-red: #ef4444;
@@ -20,16 +15,16 @@
     --neon-green-glow: rgba(16, 185, 129, 0.5);
     --neon-orange: #f59e0b;
     
-    /* --- Typographie --- */
+    
     --font-ui: 'Inter', sans-serif;
     --font-tech: 'JetBrains Mono', monospace;
     
-    /* --- Textes --- */
+    
     --text-main: #ffffff;
     --text-muted: #94a3b8;
 }
 
-/* --- 2. BASE & TEXTURE HYBRIDE --- */
+
 * {
     margin: 0;
     padding: 0;
@@ -44,20 +39,20 @@ body {
     overflow-x: hidden;
     position: relative;
     
-    /* COMBINAISON : Noise (Grain) + Pattern (Image de fond) */
+    
     background-image: 
-        /* Couche 1 : Le grain (Noise) pour la texture cinéma */
+        
         url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E"),
-        /* Couche 2 : Votre image de surveillance */
+        
         url('../images/surveillance-pattern.png');
     
     background-repeat: repeat, no-repeat;
     background-position: top left, center center;
     background-size: auto, cover;
-    background-attachment: fixed, fixed; /* Effet fixe pro */
+    background-attachment: fixed, fixed; 
 }
 
-/* --- EFFET SCANLINE --- */
+
 body::after {
     content: "";
     position: fixed;
@@ -68,10 +63,10 @@ body::after {
     background: linear-gradient(
         to bottom,
         transparent 50%,
-        rgba(59, 130, 246, 0.02) 51%, /* Ligne bleue très subtile */
+        rgba(59, 130, 246, 0.02) 51%, 
         transparent 51%
     );
-    background-size: 100% 4px; /* Fines lignes horizontales */
+    background-size: 100% 4px; 
     z-index: 9999;
     pointer-events: none;
     animation: scanline 10s linear infinite;
@@ -82,15 +77,15 @@ body::after {
     100% { background-position: 0 100vh; }
 }
 
-/* Ajout d'une "vignette" pour assombrir les coins de l'écran (Effet caméra) */
+
 body::before {
-    /* On garde votre code existant pour l'image de fond et on ajoute ceci : */
+    
     box-shadow: inset 0 0 150px rgba(0,0,0,0.9);
-    z-index: 0; /* S'assure que c'est au dessus du fond mais sous le contenu */
+    z-index: 0; 
     pointer-events: none;
 }
 
-/* --- 3. LAYOUT --- */
+
 .dashboard-main {
     padding-top: 2rem;
     padding-bottom: 4rem;
@@ -104,7 +99,7 @@ body::before {
     padding-right: 1.5rem;
 }
 
-/* --- ANIMATION D'ENTRÉE EN CASCADE --- */
+
 .kpi-card, .filters-card, .chart-card, .alert-card, .section-header {
     opacity: 0;
     animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -121,16 +116,16 @@ body::before {
     }
 }
 
-/* Délais pour l'effet de cascade */
+
 .kpi-section .kpi-card:nth-child(1) { animation-delay: 0.1s; }
 .kpi-section .kpi-card:nth-child(2) { animation-delay: 0.2s; }
 .stats-section .chart-card { animation-delay: 0.3s; }
 .filters-section { animation-delay: 0.4s; }
 .alerts-section { animation-delay: 0.5s; }
 
-/* --- 4. HEADER --- */
+
 .dashboard-header {
-    background: rgba(5, 5, 5, 0.9); /* Plus sombre pour détacher le header */
+    background: rgba(5, 5, 5, 0.9); 
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--glass-border);
@@ -193,7 +188,7 @@ body::before {
     text-shadow: 0 0 10px var(--neon-green-glow);
 }
 
-/* --- BOUTON NAVIGATION (HEADER) --- */
+
 .btn-command {
     background: rgba(59, 130, 246, 0.1);
     color: var(--neon-blue);
@@ -203,7 +198,7 @@ body::before {
     font-family: var(--font-tech);
     font-weight: 700;
     
-    /* C'est ici que ça se joue : Pas de soulignement */
+    
     text-decoration: none !important; 
     
     display: flex;
@@ -216,11 +211,11 @@ body::before {
     box-shadow: 0 0 10px rgba(59, 130, 246, 0.1);
 }
 
-/* Au survol */
+
 .btn-command:hover {
     background: var(--neon-blue);
-    color: white; /* Le texte devient blanc */
-    text-decoration: none !important; /* Toujours pas de soulignement */
+    color: white; 
+    text-decoration: none !important; 
     box-shadow: 0 0 25px var(--neon-blue-glow);
     transform: translateY(-2px);
 }
@@ -229,33 +224,33 @@ body::before {
     font-size: 1.1rem;
 }
 
-/* --- 5. COMPOSANTS UI (CARDS GLASSMORPHISM) --- */
+
 .kpi-card, .chart-card, .filters-card, .alert-card, .empty-state, .modal-content {
-    background: var(--glass-bg); /* Utilise la nouvelle opacité 0.85 */
-    backdrop-filter: blur(16px); /* Flou plus fort */
+    background: var(--glass-bg); 
+    backdrop-filter: blur(16px); 
     -webkit-backdrop-filter: blur(16px);
     border: 1px solid var(--glass-border);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5); /* Ombre plus marquée pour la lisibilité */
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5); 
     border-radius: 16px;
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .kpi-card:hover, .alert-card:hover {
     transform: translateY(-5px) scale(1.01);
-    border-color: rgba(255, 255, 255, 0.3); /* Bordure s'allume au survol */
+    border-color: rgba(255, 255, 255, 0.3); 
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 
                 0 0 30px rgba(59, 130, 246, 0.15);
 }
 
-/* --- EFFET SPOTLIGHT (LUEUR SOURIS) --- */
+
 .kpi-card, .chart-card, .alert-card, .filters-card {
     position: relative;
-    /* On prépare les variables qui seront mises à jour par JS */
+    
     --mouse-x: 0px;
     --mouse-y: 0px;
 }
 
-/* La lueur qui suit la souris */
+
 .kpi-card::before, .chart-card::before, .alert-card::before, .filters-card::before {
     content: "";
     position: absolute;
@@ -267,17 +262,17 @@ body::before {
         transparent 40%
     );
     z-index: 2;
-    opacity: 0; /* Invisible par défaut */
+    opacity: 0; 
     transition: opacity 0.5s ease;
-    pointer-events: none; /* Laisser passer les clics */
+    pointer-events: none; 
 }
 
-/* Afficher la lueur au survol */
+
 .kpi-card:hover::before, .chart-card:hover::before, .alert-card:hover::before, .filters-card:hover::before {
     opacity: 1;
 }
 
-/* La bordure lumineuse qui suit aussi la souris */
+
 .kpi-card::after, .chart-card::after, .alert-card::after, .filters-card::after {
     content: "";
     position: absolute;
@@ -292,19 +287,19 @@ body::before {
     opacity: 0;
     transition: opacity 0.5s ease;
     pointer-events: none;
-    /* Masque pour ne garder que la bordure */
+    
     mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     mask-composite: exclude;
     -webkit-mask-composite: xor;
-    padding: 1px; /* Épaisseur de la bordure lumineuse */
+    padding: 1px; 
 }
 
 .kpi-card:hover::after, .chart-card:hover::after, .alert-card:hover::after, .filters-card:hover::after {
     opacity: 1;
 }
 
-/* --- 6. KPIS --- */
+
 .kpi-section { margin-bottom: 2rem; }
 
 .kpi-card {
@@ -317,7 +312,7 @@ body::before {
 .kpi-icon {
     font-size: 2rem;
     color: var(--text-muted);
-    background: rgba(0, 0, 0, 0.3); /* Fond icône plus sombre */
+     background: rgba(0, 0, 0, 0.3); 
     padding: 1rem;
     border-radius: 12px;
     border: 1px solid var(--glass-border);
@@ -330,13 +325,13 @@ body::before {
     color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 1.5px;
-    margin-bottom: 0.5rem;
+     margin-bottom: 0.5rem;
     font-weight: 600;
 }
 
 .kpi-value {
     font-family: var(--font-tech);
-    font-size: 2.5rem;
+     font-size: 2.5rem;
     font-weight: 700;
     line-height: 1;
     color: var(--text-main);
@@ -347,7 +342,7 @@ body::before {
     text-shadow: 0 0 20px var(--neon-red-glow);
 }
 
-/* --- 7. FILTRES --- */
+
 .filters-section { margin-bottom: 2rem; }
 .filters-card { padding: 1.5rem; }
 
@@ -355,7 +350,7 @@ body::before {
     display: flex;
     align-items: center;
     gap: 0.8rem;
-    font-size: 0.9rem;
+font-size: 0.9rem;
     font-weight: 600;
     color: var(--neon-blue);
     margin-bottom: 1.5rem;
@@ -367,7 +362,7 @@ body::before {
 
 .filter-group label {
     color: var(--text-muted);
-    font-size: 0.75rem;
+      font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-right: 10px;
@@ -378,16 +373,16 @@ body::before {
     border: 1px solid var(--glass-border);
     color: var(--text-muted);
     padding: 0.5rem 1rem;
-    border-radius: 8px;
+     border-radius: 8px;
     font-size: 0.85rem;
-    cursor: pointer;
+     cursor: pointer;
     transition: all 0.3s ease;
     font-family: var(--font-ui);
 }
 
 .btn-filter:hover {
     border-color: var(--neon-blue);
-    color: #fff;
+     color: #fff;
     background: rgba(59, 130, 246, 0.1);
 }
 
@@ -398,7 +393,7 @@ body::before {
     box-shadow: 0 0 15px var(--neon-blue-glow);
 }
 
-/* --- 8. CHARTS --- */
+
 .stats-section { margin-bottom: 2rem; }
 .chart-card { padding: 1.5rem; height: 100%; }
 
@@ -413,7 +408,7 @@ body::before {
 
 .chart-container { position: relative; height: 300px; }
 
-/* --- 9. ALERTES --- */
+
 .alerts-section { margin-bottom: 4rem; }
 
 .section-header {
@@ -489,7 +484,7 @@ body::before {
     background: var(--neon-blue);
     border: none;
     color: white;
-    width: 45px;
+     width: 45px;
     height: 45px;
     border-radius: 50%;
     font-size: 1.2rem;
@@ -509,20 +504,20 @@ body::before {
     padding: 0.3rem 0.6rem;
     border-radius: 4px;
     font-weight: 700;
-    letter-spacing: 0.5px;
+     letter-spacing: 0.5px;
     text-transform: uppercase;
 }
 
 .alert-badge-untreated {
     background: rgba(239, 68, 68, 0.1);
     color: var(--neon-red);
-    border: 1px solid rgba(239, 68, 68, 0.3);
+border: 1px solid rgba(239, 68, 68, 0.3);
     box-shadow: 0 0 10px var(--neon-red-glow);
 }
 
 .alert-badge-treated {
     background: rgba(16, 185, 129, 0.1);
-    color: var(--neon-green);
+     color: var(--neon-green);
     border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
@@ -533,17 +528,17 @@ body::before {
     margin-bottom: 1.2rem;
 }
 
-/* Bouton d'action principal */
+
 .btn-mark-treated {
     width: 100%;
-    background: transparent;
+     background: transparent;
     border: 1px solid var(--neon-blue);
-    color: var(--neon-blue);
+     color: var(--neon-blue);
     padding: 0.7rem;
     border-radius: 8px;
     font-weight: 600;
     font-family: var(--font-ui);
-    text-transform: uppercase;
+     text-transform: uppercase;
     letter-spacing: 1px;
     font-size: 0.8rem;
     margin-top: auto;
@@ -557,25 +552,25 @@ body::before {
     box-shadow: 0 0 20px var(--neon-blue-glow);
 }
 
-/* Info Incident */
+
 .incident-info {
     margin-top: auto;
     padding: 0.8rem;
     background: rgba(0, 0, 0, 0.3);
     border: 1px solid var(--glass-border);
-    border-radius: 8px;
+     border-radius: 8px;
     font-size: 0.85rem;
 }
 .incident-type { color: var(--neon-blue); font-weight: 600; margin-bottom: 4px; }
 .incident-notes { color: var(--text-muted); font-style: italic; }
 
-/* --- 10. CORRECTION FORMULAIRES & MODAL --- */
 
-/* Force le fond sombre pour les selects et inputs */
+
+
 .form-select, .form-control {
-    background-color: rgba(5, 5, 5, 0.8) !important; /* Noir sombre */
-    color: #ffffff !important; /* Texte blanc */
-    border: 1px solid var(--glass-border) !important;
+    background-color: rgba(5, 5, 5, 0.8) !important; 
+    color: #ffffff !important; 
+ border: 1px solid var(--glass-border) !important;
     font-family: var(--font-ui);
 }
 
@@ -585,16 +580,16 @@ body::before {
     background-color: rgba(0, 0, 0, 0.9) !important;
 }
 
-/* Cible spécifiquement les options de la liste déroulante pour éviter le blanc sur blanc */
+
 .form-select option {
     background-color: #050505;
     color: white;
     padding: 10px;
 }
 
-/* Modale plus lisible */
+
 .modal-content {
-    background: rgba(15, 15, 20, 0.95); /* Presque opaque pour la lisibilité */
+    background: rgba(15, 15, 20, 0.95); 
     border: 1px solid var(--glass-border);
     box-shadow: 0 0 50px rgba(0,0,0,0.8);
 }
@@ -607,15 +602,15 @@ body::before {
     filter: invert(1) grayscale(100%) brightness(200%);
 }
 
-/* --- 11. BOUTON LOAD MORE --- */
+
 .btn-load-more {
     background: rgba(0, 0, 0, 0.3);
     border: 1px solid var(--glass-border);
     color: var(--text-muted);
-    padding: 0.8rem 2rem;
+     padding: 0.8rem 2rem;
     border-radius: 50px;
     font-size: 0.9rem;
-    font-weight: 600;
+     font-weight: 600;
     cursor: pointer;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -623,21 +618,21 @@ body::before {
 }
 .btn-load-more:hover {
     background: var(--neon-blue);
-    color: white;
+     color: white;
     border-color: var(--neon-blue);
     box-shadow: 0 0 20px var(--neon-blue-glow);
 }
 
-/* --- 12. EMPTY STATE --- */
+
 .empty-state {
-    grid-column: 1 / -1;
-    text-align: center;
-    padding: 4rem;
-    color: var(--text-muted);
+     grid-column: 1 / -1;
+     text-align: center;
+     padding: 4rem;
+     color: var(--text-muted);
 }
 .empty-state i { font-size: 3rem; margin-bottom: 1rem; opacity: 0.5; }
 
-/* --- 13. LIGHTBOX & TOAST --- */
+
 .lightbox {
     display: none;
     position: fixed;
@@ -651,7 +646,7 @@ body::before {
 .lightbox.active { display: flex; animation: fadeIn 0.2s ease; }
 .lightbox-content img {
     max-width: 95%;
-    max-height: 90vh;
+max-height: 90vh;
     border-radius: 8px;
     box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
     border: 1px solid var(--glass-border);
@@ -661,7 +656,7 @@ body::before {
     top: 20px;
     right: 20px;
     background: transparent;
-    border: none;
+     border: none;
     color: var(--text-muted);
     font-size: 2rem;
     cursor: pointer;
@@ -688,7 +683,7 @@ body::before {
 }
 .toast-notification.show { transform: translateX(0); }
 
-/* --- 14. ANIMATIONS & RESPONSIVE --- */
+
 @keyframes pulse-green {
     0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
     70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
@@ -697,7 +692,7 @@ body::before {
 .pulse-dot {
     width: 8px;
     height: 8px;
-    background-color: var(--neon-green);
+     background-color: var(--neon-green);
     border-radius: 50%;
     animation: pulse-green 2s infinite;
 }
@@ -707,6 +702,6 @@ body::before {
     .header-info { display: none; }
     .filters-controls { flex-direction: column; gap: 1rem; }
     .btn-group-filter { flex-wrap: wrap; }
-    .kpi-value { font-size: 2rem; }
+     .kpi-value { font-size: 2rem; }
     .alerts-grid { grid-template-columns: 1fr; }
 }

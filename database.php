@@ -13,7 +13,7 @@ function getDBConnection() {
         $pdo = new PDO($dsn, DB_USER, DB_PASS, $options);
         return $pdo;
     } catch (PDOException $e) {
-        die("Erreur de connexion à la base de données : " . $e->getMessage());
+        die("erreur de Connexion à la base de donnees : " . $e->getMessage());
     }
 }
 ?>
