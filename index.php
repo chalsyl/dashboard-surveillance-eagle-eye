@@ -36,8 +36,7 @@ $alertes = $stmt->fetchAll();
     <header class="dashboard-header">
         <div class="container">
             <div class="d-flex align-items-center justify-content-between">
-                
-                <div class="brand">
+            <div class="brand">
                     <i class="fas fa-eye brand-icon"></i>
                     <div>
                         <h1 class="brand-title">EAGLE EYE</h1>
@@ -74,7 +73,7 @@ $alertes = $stmt->fetchAll();
             <section class="kpi-section">
                 <div class="row g-4">
                     <div class="col-md-6">
-                        <div class="kpi-card">
+                <div class="kpi-card">
                             <div class="kpi-icon">
                                 <i class="fas fa-shield-alt"></i>
                             </div>
@@ -87,15 +86,14 @@ $alertes = $stmt->fetchAll();
                     </div>
                     <div class="col-md-6">
                         <div class="kpi-card kpi-card-alert">
-                            <div class="kpi-icon">
+                             <div class="kpi-icon">
                                 <i class="fas fa-exclamation-triangle"></i>
                             </div>
                             <div class="kpi-content">
                                 <h3 class="kpi-label">Alertes Non Traitées</h3>
-                                <div class="kpi-value kpi-value-alert" id="alertesNonTraitees"><?= $alertesNonTraitees ?></div>
-                            </div>
+                                <div class="kpi-value kpi-value-alert" id="alertesNonTraitees"><?= $alertesNonTraitees ?></div> </div>
                             <div class="kpi-decoration kpi-decoration-alert"></div>
-                        </div>
+                    </div>
                     </div>
                 </div>
             </section>
@@ -168,7 +166,7 @@ $alertes = $stmt->fetchAll();
                             <div class="alert-image-wrapper">
                                 <img src="<?= $imageUrl ?>" alt="Capture" class="alert-image" data-large="<?= $imageUrl ?>">
                                 <div class="alert-overlay">
-                                    <button class="btn-zoom" title="Agrandir">
+                                <button class="btn-zoom" title="Agrandir">
                                         <i class="fas fa-search-plus"></i>
                                     </button>
                                 </div>
