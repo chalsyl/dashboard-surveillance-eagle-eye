@@ -1,43 +1,33 @@
-// ==========================================
-// EAGLE EYE - MOTEUR JS PRINCIPAL (V3.1 FINAL)
-// ==========================================
-
-// ===== VARIABLES GLOBALES =====
 let currentFilter = 'all';
 let currentSort = 'desc';
 let currentOffset = 0;
 let isLoading = false;
 let hasMore = true;
 
-// Graphiques
 let dailyChart, hourlyChart, incidentTypeChart;
 
 const incidentColorMap = {
-    'Fausse Alerte':       'rgba(16, 185, 129, 0.8)', // Vert
-    'Activité Suspecte':   'rgba(245, 158, 11, 0.8)', // Orange
-    'Intrusion Confirmée': 'rgba(239, 68, 68, 0.8)',  // Rouge
-    'Test Système':        'rgba(59, 130, 246, 0.8)', // Bleu
-    'default':             'rgba(148, 163, 184, 0.5)' // Gris
+    'Fausse Alerte':       'rgba(16, 185, 129, 0.8)', 
+    'Activité Suspecte':   'rgba(245, 158, 11, 0.8)', 
+    'Intrusion Confirmée': 'rgba(239, 68, 68, 0.8)',  
+    'Test Système':        'rgba(59, 130, 246, 0.8)', 
+    'default':             'rgba(148, 163, 184, 0.5)' 
 };
 
-// ===== INITIALISATION =====
 document.addEventListener('DOMContentLoaded', function() {
     initClock();
     initFilters();
     initLightbox();
     
-    // C'était la fonction manquante !
     initIncidentModal(); 
     
     initLoadMore();
     initCharts();
     initSpotlight();
     
-    // Lancement des tâches de fond
     startAutoRefresh();
 });
 
-// ===== 1. LOGIQUE DE RAFRAÎCHISSEMENT (AUTO-REFRESH) =====
 function startAutoRefresh() {
     setInterval(updateStats, 5000);
     setInterval(updateCharts, 30000);
@@ -74,25 +64,18 @@ function injectNewAlert(alert) {
     const container = document.getElementById('alertsContainer');
     const html = createAlertCard(alert);
     
-    // Injection au début de la grille
     container.insertAdjacentHTML('afterbegin', html);
     const newCard = container.firstElementChild;
     
-    // --- CORRECTION ICI ---
-    // 1. On force l'animation avec 'forwards' pour qu'elle reste visible à la fin
     newCard.style.animation = 'fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards';
     
-    // 2. Lueur bleue pour attirer l'attention
     newCard.style.boxShadow = '0 0 30px var(--neon-blue-glow)';
     
-    // 3. Nettoyage après l'animation (1 seconde plus tard)
     setTimeout(() => { 
         newCard.style.boxShadow = ''; 
-        // On force l'opacité à 1 manuellement pour être sûr à 100% qu'elle ne redisparaisse jamais
         newCard.style.opacity = '1';
     }, 1000);
 
-    // Réattacher les événements sur ce nouvel élément
     const zoomBtn = newCard.querySelector('.btn-zoom');
     if(zoomBtn) {
         zoomBtn.addEventListener('click', function(e) {
@@ -111,16 +94,11 @@ function injectNewAlert(alert) {
     
     updateAlertCountText(1);
     
-    // Réappliquer l'effet Spotlight sur la nouvelle carte
     if (typeof initSpotlight === 'function') initSpotlight();
 }
 
-// ===== 2. GESTION DES INCIDENTS (La Partie Corrigée) =====
-
-// CETTE FONCTION MANQUAIT : Elle attache les clics aux boutons existants
 function initIncidentModal() {
     document.querySelectorAll('.btn-mark-treated').forEach(button => {
-        // On clone pour éviter les doublons d'événements si appelé plusieurs fois
         const newBtn = button.cloneNode(true);
         button.parentNode.replaceChild(newBtn, button);
         
@@ -138,10 +116,8 @@ function openIncidentModal(alertId) {
     modal.show();
 }
 
-// Listener global pour le bouton "Sauvegarder" de la modale
 const submitBtn = document.getElementById('submitIncidentBtn');
 if (submitBtn) {
-    // On supprime les anciens listeners pour éviter les multiples soumissions
     const newSubmitBtn = submitBtn.cloneNode(true);
     submitBtn.parentNode.replaceChild(newSubmitBtn, submitBtn);
     
@@ -235,8 +211,6 @@ function handleCardUpdate(alertId, incidentType, notes) {
     }
 }
 
-// ===== 3. FONCTIONS UTILITAIRES =====
-
 function updateAlertCountText(change) {
     const countEl = document.getElementById('alertsCount');
     if(countEl) {
@@ -255,10 +229,8 @@ function createAlertCard(alert) {
     let footerContent = '';
     
     if (!isTraitee) {
-        // Bouton TRAITER (Bleu)
         footerContent = `<button class="btn-mark-treated" data-id="${alert.id}"><i class="fas fa-clipboard-check"></i> TRAITER</button>`;
     } else {
-        // INFOS + Bouton SUPPRIMER (Rouge)
         footerContent = `
             <div class="incident-info">
                 <div class="incident-type"><i class="fas fa-tag"></i> ${alert.incident_type || 'Incident classé'}</div>
@@ -294,8 +266,6 @@ function createAlertCard(alert) {
         </div>
     `;
 }
-
-// ===== 4. CHARGEMENT & FILTRES =====
 
 function initFilters() {
     document.querySelectorAll('[data-filter]').forEach(btn => {
@@ -353,7 +323,7 @@ function applyFilters(reset = false) {
                     initSpotlight();
                 }
                 
-                hasMore = data.total > (currentOffset + data.alerts.length); // Fix hasMore logic
+                hasMore = data.total > (currentOffset + data.alerts.length); 
                 const btnLoad = document.getElementById('loadMoreContainer');
                 if(btnLoad) btnLoad.style.display = hasMore ? 'flex' : 'none';
                 
@@ -372,8 +342,6 @@ function initLoadMore() {
         }
     });
 }
-
-// ===== 5. LIGHTBOX & SPOTLIGHT =====
 
 function initLightbox() {
     document.querySelectorAll('.btn-zoom').forEach(btn => {
@@ -413,8 +381,6 @@ function initSpotlight() {
     });
 }
 
-// ===== 6. STATS & CHARTS =====
-
 function updateStats() {
     const apiPath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/')) + '/api/get_stats.php';
     fetch(apiPath).then(r => r.json()).then(data => {
@@ -431,7 +397,6 @@ function animateCounter(id, end) {
     const start = parseInt(el.textContent.replace(/\D/g, '')) || 0;
     if (start === end) return;
     
-    // Simple interpolation
     el.textContent = end;
     el.style.textShadow = "0 0 15px var(--neon-blue)";
     setTimeout(() => { el.style.textShadow = "none"; }, 500);
@@ -445,7 +410,6 @@ function initClock() {
 }
 
 function initCharts() {
-    // On lance immédiatement la mise à jour pour créer les graphiques
     updateCharts();
 }
 
@@ -530,9 +494,6 @@ function showToast(msg, err=false) {
     setTimeout(()=>t.classList.remove('show'), 3000);
 }
 
-// ===== GESTION DE LA SUPPRESSION =====
-
-// 1. Délégation d'événement pour le bouton "Supprimer" individuel
 document.addEventListener('click', function(e) {
     if (e.target && e.target.closest('.btn-delete-alert')) {
         const btn = e.target.closest('.btn-delete-alert');
@@ -541,7 +502,6 @@ document.addEventListener('click', function(e) {
     }
 });
 
-// 2. Événement pour le bouton "Tout Purger"
 const btnPurge = document.getElementById('btnPurgeAll');
 if (btnPurge) {
     btnPurge.addEventListener('click', function() {
@@ -552,7 +512,6 @@ if (btnPurge) {
 }
 
 function deleteAlert(id, btn) {
-    // Petit effet visuel immédiat
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
     
     fetch('api/delete_alerts.php', {
@@ -560,7 +519,6 @@ function deleteAlert(id, btn) {
         body: JSON.stringify({ action: 'delete_one', id: id })
     }).then(r => r.json()).then(data => {
         if (data.success) {
-            // Animation de suppression
             const card = document.querySelector(`.alert-card[data-id="${id}"]`);
             if (card) card.remove();
             showToast("Alerte supprimée.");
@@ -576,7 +534,6 @@ function purgeAllTreated() {
     }).then(r => r.json()).then(data => {
         if (data.success) {
             showToast("Toutes les archives ont été supprimées.");
-            // Recharger la grille
             currentOffset = 0;
             applyFilters(true);
         }
