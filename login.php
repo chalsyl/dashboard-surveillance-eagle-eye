@@ -4,13 +4,11 @@ require_once 'database.php';
 
 $error = '';
 
-// Si déjà connecté, on envoie direct au C2
 if (isset($_SESSION['user_id'])) {
     header('Location: control.php');
     exit;
 }
 
-// Traitement du formulaire
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'] ?? '';
     $password = $_POST['password'] ?? '';
@@ -21,13 +19,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute(['username' => $username]);
         $user = $stmt->fetch();
 
-        // Vérification du mot de passe (admin / admin par défaut)
         if ($user && $password === $user['password']) {
-            // SUCCÈS
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['username'] = $username;
             
-            // Redirection vers le CENTRE DE COMMANDE comme demandé
             header('Location: control.php');
             exit;
         } else {
@@ -45,14 +40,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eagle Eye - Accès Sécurisé</title>
     
-    <!-- CDNs -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
 
     <style>
-        /* Styles spécifiques au Login pour centrer et styliser */
         body {
             display: flex;
             align-items: center;
@@ -65,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             width: 100%;
             max-width: 420px;
             padding: 3rem;
-            background: rgba(10, 15, 25, 0.7); /* Plus sombre */
+            background: rgba(10, 15, 25, 0.7); 
             backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
             border-radius: 20px;
@@ -75,7 +68,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             overflow: hidden;
         }
 
-        /* Ligne de scan décorative */
         .login-card::after {
             content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
             background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
@@ -106,7 +98,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             text-transform: uppercase;
         }
 
-        /* Champs de saisie stylisés */
         .input-group-text {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--glass-border);
@@ -129,7 +120,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             border-color: var(--neon-blue) !important;
         }
         
-        /* Quand l'input est focus, on colore aussi l'icône à gauche */
         .form-control:focus + .input-group-text, 
         .input-group:focus-within .input-group-text {
             border-color: var(--neon-blue) !important;
@@ -154,7 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .btn-login:hover {
             transform: translateY(-2px);
             box-shadow: 0 0 40px var(--neon-blue-glow);
-            background: #4f8fff; /* Bleu un peu plus clair */
+            background: #4f8fff; 
         }
 
         .error-msg {

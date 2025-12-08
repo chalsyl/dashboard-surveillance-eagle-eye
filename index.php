@@ -5,13 +5,11 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 require_once 'database.php';
-// Récupération des statistiques
 $pdo = getDBConnection();
 
 $totalAlertes = $pdo->query("SELECT COUNT(*) FROM alertes")->fetchColumn();
 $alertesNonTraitees = $pdo->query("SELECT COUNT(*) FROM alertes WHERE statut = 'non_traitée'")->fetchColumn();
 
-// Récupération des 20 dernières alertes
 $stmt = $pdo->query("SELECT * FROM alertes ORDER BY date_alerte DESC LIMIT 20");
 $alertes = $stmt->fetchAll();
 ?>
@@ -22,30 +20,23 @@ $alertes = $stmt->fetchAll();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eagle Eye - Command Center</title>
     
-    <!-- Bootstrap 5 (CDN) -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     
-    <!-- Font Awesome (CDN) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     
-    <!-- Chart.js (CDN) -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     
-    <!-- NOUVELLES FONTS : Inter (UI) et JetBrains Mono (Data) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     
-    <!-- CSS personnalisé -->
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-    <!-- Header -->
     <header class="dashboard-header">
         <div class="container">
             <div class="d-flex align-items-center justify-content-between">
                 
-                <!-- Logo -->
                 <div class="brand">
                     <i class="fas fa-eye brand-icon"></i>
                     <div>
@@ -54,10 +45,8 @@ $alertes = $stmt->fetchAll();
                     </div>
                 </div>
 
-                <!-- Zone Droite -->
                 <div class="d-flex align-items-center gap-4">
                     
-                    <!-- Info (Heure) -->
                     <div class="header-info d-none d-md-flex">
                         <span class="status-indicator">
                             <span class="pulse-dot"></span>
@@ -66,7 +55,6 @@ $alertes = $stmt->fetchAll();
                         <span class="current-time" id="currentTime"></span>
                     </div>
 
-                    <!-- LE BOUTON DE NAVIGATION -->
                     <a href="control.php" class="btn-command">
                         <i class="fas fa-gamepad"></i>
                         <span>COMMANDER</span>
@@ -80,11 +68,9 @@ $alertes = $stmt->fetchAll();
         </div>
     </header>
 
-    <!-- Main Dashboard -->
     <main class="dashboard-main">
         <div class="container">
             
-            <!-- KPIs Section -->
             <section class="kpi-section">
                 <div class="row g-4">
                     <div class="col-md-6">
@@ -114,7 +100,6 @@ $alertes = $stmt->fetchAll();
                 </div>
             </section>
 
-            <!-- Filters Section -->
             <section class="filters-section">
                 <div class="filters-card">
                     <div class="filters-header">
@@ -159,7 +144,6 @@ $alertes = $stmt->fetchAll();
                 </div>
             </section>
 
-            <!-- Alerts Stream Section -->
             <section class="alerts-section">
                 <div class="section-header">
                     <h2 class="section-title">
@@ -172,15 +156,12 @@ $alertes = $stmt->fetchAll();
                 <div id="alertsContainer" class="alerts-grid">
                     <?php foreach ($alertes as $alerte): ?>
                         <?php
-                        // Extraire le nom du fichier depuis le chemin complet
                         $imageName = basename($alerte['image_path']);
                         $imageUrl = IMAGE_BASE_URL . $imageName;
                         
-                        // Formater la date
                         $date = new DateTime($alerte['date_alerte']);
                         $dateFormatted = $date->format('d/m/Y à H:i:s');
                         
-                        // Votre BDD utilise 'envoyée' au lieu de 'traitée'
                         $isTraitee = $alerte['statut'] === 'envoyée';
                         ?>
                         <div class="alert-card" data-id="<?= $alerte['id'] ?>" data-status="<?= $alerte['statut'] ?>">
@@ -211,7 +192,7 @@ $alertes = $stmt->fetchAll();
                                     <i class="fas fa-clipboard-check"></i>
                                     Traiter l'Incident
                                 </button>
-                            <?php else: // Si l'alerte EST traitée, on affiche les infos de l'incident ?>
+                            <?php else: ?>
                                 <?php if (!empty($alerte['incident_type']) || !empty($alerte['notes'])): ?>
                                     <div class="incident-info">
                                         <?php if (!empty($alerte['incident_type'])): ?>
@@ -234,13 +215,11 @@ $alertes = $stmt->fetchAll();
                     <?php endforeach; ?>
                 </div>
                 
-                <!-- NOUVEAU BLOC À AJOUTER ICI -->
                 <div id="loadMoreContainer" class="d-flex justify-content-center mt-4">
                     <button id="loadMoreBtn" class="btn-load-more">
                         <i class="fas fa-plus"></i> Afficher plus d'alertes
                     </button>
                 </div>
-                <!-- FIN DU NOUVEAU BLOC -->
 
                 <?php if (empty($alertes)): ?>
                     <div class="empty-state">
@@ -254,7 +233,6 @@ $alertes = $stmt->fetchAll();
         </div>
     </main>
 
-    <!-- Stats & Charts Section -->
 <section class="stats-section">
     <div class="container">
         <h2 class="section-title">
@@ -290,7 +268,6 @@ $alertes = $stmt->fetchAll();
     </div>
 </section>
 
-    <!-- Lightbox Modal -->
     <div id="lightbox" class="lightbox">
         <button class="lightbox-close">
             <i class="fas fa-times"></i>
@@ -300,7 +277,6 @@ $alertes = $stmt->fetchAll();
         </div>
     </div>
 
-    <!-- Incident Report Modal -->
 <div class="modal fade" id="incidentModal" tabindex="-1" aria-labelledby="incidentModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content text-white" style="background: var(--bg-card); border: 1px solid var(--border-color);">
@@ -339,15 +315,12 @@ $alertes = $stmt->fetchAll();
     </div>
 </div>
 
-   <!-- Toast Notification -->
     <div id="toast" class="toast-notification">
         <i class="fas fa-check-circle"></i>
         <span id="toastMessage"></span>
     </div>
 
-    <!-- Bootstrap JS (CDN) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Notre Application -->
     <script src="assets/js/app.js"></script>
 </body>
 </html>

@@ -1,21 +1,15 @@
 <?php
-// /api/get_alerts.php
-
 header('Content-Type: application/json');
 require_once __DIR__ . '/../database.php';
 require_once __DIR__ . '/../config.php';
-
 try {
     $pdo = getDBConnection();
-    
     $filter = $_GET['filter'] ?? 'all';
     $sort = $_GET['sort'] ?? 'desc';
     $offset = isset($_GET['offset']) ? (int)$_GET['offset'] : 0;
     $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 20;
-
     $whereClause = "";
     $params = [];
-
     if ($filter === 'non_traitée') {
         $whereClause = "WHERE statut = :statut";
         $params[':statut'] = 'non_traitée';
@@ -23,13 +17,9 @@ try {
         $whereClause = "WHERE statut = :statut";
         $params[':statut'] = 'envoyée';
     }
-
-    // Récupérer le nombre total d'alertes pour la pagination
     $totalStmt = $pdo->prepare("SELECT COUNT(*) FROM alertes " . $whereClause);
     $totalStmt->execute($params);
     $totalAlerts = $totalStmt->fetchColumn();
-    
-    // Récupérer les alertes pour la page actuelle
     $sql = "SELECT * FROM alertes " . $whereClause . " ORDER BY date_alerte " . ($sort === 'asc' ? 'ASC' : 'DESC') . " LIMIT :limit OFFSET :offset";
     $stmt = $pdo->prepare($sql);
     foreach ($params as $key => $val) {
@@ -39,7 +29,6 @@ try {
     $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
     $stmt->execute();
     $alertes = $stmt->fetchAll();
-
     $formattedAlerts = [];
     foreach ($alertes as $alerte) {
         $formattedAlerts[] = [
@@ -51,14 +40,12 @@ try {
             'notes' => $alerte['notes']
         ];
     }
-    
     echo json_encode([
         'success' => true,
         'alerts' => $formattedAlerts,
         'total' => $totalAlerts,
         'hasMore' => ($offset + count($alertes)) < $totalAlerts
     ]);
-    
 } catch (Exception $e) {
     http_response_code(500);
     echo json_encode(['success' => false, 'error' => $e->getMessage()]);

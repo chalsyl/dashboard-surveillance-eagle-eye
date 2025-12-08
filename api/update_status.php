@@ -1,14 +1,11 @@
 <?php
 error_reporting(0);
 ini_set('display_errors', 0);
-
 header('Content-Type: application/json');
 require_once __DIR__ . '/../database.php';
-
 try {
     $input = file_get_contents('php://input');
     $data = json_decode($input, true);
-
     if (!isset($data['id']) || !is_numeric($data['id'])) {
         http_response_code(400);
         echo json_encode([
@@ -17,8 +14,6 @@ try {
         ], JSON_THROW_ON_ERROR);
         exit;
     }
-
-    // Vérifier que les champs requis sont présents
     if (!isset($data['incident_type']) || empty($data['incident_type'])) {
         http_response_code(400);
         echo json_encode([
@@ -27,10 +22,7 @@ try {
         ], JSON_THROW_ON_ERROR);
         exit;
     }
-
     $pdo = getDBConnection();
-    
-    // Mettre à jour avec toutes les nouvelles informations
     $stmt = $pdo->prepare("
         UPDATE alertes 
         SET statut = 'envoyée',
@@ -39,13 +31,11 @@ try {
             treated_at = NOW()
         WHERE id = :id
     ");
-    
     $stmt->execute([
         'id' => (int)$data['id'],
         'incident_type' => $data['incident_type'],
         'notes' => isset($data['notes']) ? $data['notes'] : null
     ]);
-    
     if ($stmt->rowCount() > 0) {
         echo json_encode([
             'success' => true,
@@ -58,7 +48,6 @@ try {
             'error' => 'Alerte non trouvée'
         ], JSON_THROW_ON_ERROR);
     }
-    
 } catch (Exception $e) {
     http_response_code(500);
     echo json_encode([
